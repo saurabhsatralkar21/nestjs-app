@@ -12,6 +12,11 @@ export class BoardsService {
 
     @InjectRepository(Board) private readonly boardRepository: Repository<Board>;
 
+
+    async getAllBoards(): Promise<Board[]>{
+        return this.boardRepository.find();
+    }
+
     async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
         const {title, description} = createBoardDto;
 
@@ -52,11 +57,6 @@ export class BoardsService {
         
     }
 
-    // deleteBoard(id: string): void {
-    //     const found = this.getBoardById(id);
-    //     this.boards = this.boards.filter(board => board.id ! == found.id);
-    // }
-
     async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {
         const board = await this.getBoardById(id);
         board.status = status;
@@ -64,11 +64,5 @@ export class BoardsService {
         await this.boardRepository.save(board);
         return board;
     }
-
-    // updateBoardStatus(id: string, status: BoardStatus): Board {
-    //     const board = this.getBoardById(id);
-    //     board.status = status
-    //     return board;
-    // }
 
 }
