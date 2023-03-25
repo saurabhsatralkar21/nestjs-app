@@ -16,7 +16,7 @@ export class BoardsController {
     // }
 
 
-     @Post()
+    @Post()
     @UsePipes(ValidationPipe)
     createBoard(
         @Body() createBoardDto: CreateBoardDto): Promise<Board> {
@@ -31,7 +31,7 @@ export class BoardsController {
     // }
 
 
-     @Get("/:id")
+    @Get("/:id")
     getBoardById(@Param("id") id:number): Promise<Board> {
         return this.boardsService.getBoardById(id);
     }
@@ -40,6 +40,12 @@ export class BoardsController {
     // getBoardById(@Param("id") id:string): Board {
     //     return this.boardsService.getBoardById(id);
     // }
+
+    @Delete("/:id")
+    deleteBoard(@Param("id") id:number): Promise<void> {
+       return this.boardsService.deleteBoard(id);
+    }
+
 
     // @Delete("/:id")
     // deleteBoard(@Param("id") id:string) :void {
