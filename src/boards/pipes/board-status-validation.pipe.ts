@@ -14,6 +14,8 @@ export class BoardStatusValidationPipe implements PipeTransform {
         if(!this.isStatusValid(value)){
             throw new BadRequestException(`${value} isn't in the status options`);
         }    
+
+        return value;
     }
 
     private isStatusValid(status: any) {
