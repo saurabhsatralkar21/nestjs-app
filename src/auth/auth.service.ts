@@ -9,16 +9,16 @@ export class AuthService {
     
     @InjectRepository(User) private readonly userRepository: Repository<User>;
 
-    async createUser(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+    async createUser(authCredentialsDto: AuthCredentialsDto): Promise<User> {
         const {username, password} = authCredentialsDto;
-        const user = this.createUser({ username, password });
-        await this.save(user);
+
+        const user = await this.userRepository.create({ username, password });
+        await this.userRepository.save(user);
+
+        return user;
     }
-    save(user: Promise<void>) {
-        throw new Error('Method not implemented.');
-    }
- 
-    async signUp(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+  
+    async signUp(authCredentialsDto: AuthCredentialsDto): Promise<User> {
         return this.createUser(authCredentialsDto);
     }
  
