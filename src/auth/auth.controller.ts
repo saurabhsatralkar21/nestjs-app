@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post, ValidationPipe } from '@nestjs/common';
 import { AuthCredentialsDto } from './auth-credentials.dto';
 import { AuthService } from './auth.service';
 import { User } from './user.entity';
@@ -12,8 +12,7 @@ constructor(
 
 @Post("/signup")
 signUp(
-    @Body() authcredentials: AuthCredentialsDto): Promise<User>{
+    @Body(ValidationPipe) authcredentials: AuthCredentialsDto): Promise<User>{
     return this.authService.signUp(authcredentials);
 }
-
 }
