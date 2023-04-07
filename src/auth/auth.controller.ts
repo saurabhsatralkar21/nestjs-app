@@ -10,6 +10,11 @@ constructor(
     private authService: AuthService
 ){}
 
+@Post('/signin')
+signIn(@Body(ValidationPipe) authcredentials: AuthCredentialsDto): Promise<String>{
+    return this.authService.signIn(authcredentials);
+}
+
 @Post("/signup")
 signUp(
     @Body(ValidationPipe) authcredentials: AuthCredentialsDto): Promise<User>{
