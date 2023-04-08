@@ -11,7 +11,7 @@ constructor(
 ){}
 
 @Post('/signin')
-signIn(@Body(ValidationPipe) authcredentials: AuthCredentialsDto): Promise<String>{
+signIn(@Body(ValidationPipe) authcredentials: AuthCredentialsDto): Promise<{accessToken: string}>{
     return this.authService.signIn(authcredentials);
 }
 
