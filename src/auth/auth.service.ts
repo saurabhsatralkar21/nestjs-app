@@ -47,6 +47,7 @@ export class AuthService {
             // Create token
             const paylod = {username};
             const accessToken = await this.jwtService.sign(paylod);
+            
             return {accessToken}
         }else {
             throw new UnauthorizedException("login failed");
