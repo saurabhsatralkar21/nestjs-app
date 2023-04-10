@@ -5,6 +5,8 @@ import { CreateBoardDto } from './dto/create-board.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './board.entity';
 import { Repository } from 'typeorm';
+import { User } from 'src/auth/user.entity';
+import { FindOneOptions } from 'typeorm';
 
 @Injectable()
 export class BoardsService {
@@ -17,21 +19,31 @@ export class BoardsService {
         return this.boardRepository.find();
     }
 
-    async createBoard(createBoardDto: CreateBoardDto): Promise<Board> {
+    async createBoard(createBoardDto: CreateBoardDto, user: User): Promise<Board> {
         const {title, description} = createBoardDto;
 
         const board = this.boardRepository.create({
             title,
             description,
-            status: BoardStatus.PUBLIC
+            status: BoardStatus.PUBLIC,
+            user
         })
         await this.boardRepository.save(board);
 
         return board;
     }
 
-    async getBoardById(id: number): Promise<Board> {
-        const found = await this.boardRepository.findOne({where: {id}});
+    async getBoardById(id: number, user: User): Promise<Board> {
+        // const found = await this.boardRepository.findOne({where:{id,}} );
+
+        const options: FindOneOptions<Board> = {
+            where: {
+              id: 1,
+              userId: user.id,
+            },
+          };
+
+        const found = await this.boardRepository.findOne(options);
 
         if(!found)
         throw new NotFoundException(`Can't find board with ${id}`)
@@ -57,8 +69,8 @@ export class BoardsService {
         
     }
 
-    async updateBoardStatus(id: number, status: BoardStatus): Promise<Board> {
-        const board = await this.getBoardById(id);
+    async updateBoardStatus(id: number, status: BoardStatus, user: User): Promise<Board> {
+        const board = await this.getBoardById(id, user);
         board.status = status;
 
         await this.boardRepository.save(board);
