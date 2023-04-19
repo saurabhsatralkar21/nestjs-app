@@ -44,7 +44,7 @@ export class BoardsController {
 
 
     @Get("/:id")
-    getBoardById(@Param("id") id:number, user: User): Promise<Board> {
+    getBoardById(@Param("id") id:number, @GetUser() user: User): Promise<Board> {
         return this.boardsService.getBoardById(id, user);
     }
 
@@ -54,8 +54,8 @@ export class BoardsController {
     // }
 
     @Delete("/:id")
-    deleteBoard(@Param("id") id:number): Promise<void> {
-       return this.boardsService.deleteBoard(id);
+    deleteBoard(@Param("id") id:number, @GetUser() user: User): Promise<void> {
+       return this.boardsService.deleteBoard(id, user);
     }
 
 

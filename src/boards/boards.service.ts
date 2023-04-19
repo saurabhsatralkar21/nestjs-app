@@ -4,7 +4,7 @@ import { CreateBoardDto } from './dto/create-board.dto';
 //import { BoardRepository } from './board.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Board } from './board.entity';
-import { Repository } from 'typeorm';
+import { FindManyOptions, Repository } from 'typeorm';
 import { User } from 'src/auth/user.entity';
 import { FindOneOptions } from 'typeorm';
 
@@ -34,16 +34,7 @@ export class BoardsService {
     }
 
     async getBoardById(id: number, user: User): Promise<Board> {
-        // const found = await this.boardRepository.findOne({where:{id,}} );
-
-        const options: FindOneOptions<Board> = {
-            where: {
-              id: 1,
-              userId: user.id,
-            },
-          };
-
-        const found = await this.boardRepository.findOne(options);
+        const found = await this.boardRepository.findOne({where:{id}});
 
         if(!found)
         throw new NotFoundException(`Can't find board with ${id}`)
@@ -60,8 +51,8 @@ export class BoardsService {
     //     return found;
     // }
 
-    async deleteBoard(id: number): Promise<void> {
-        const result = await this.boardRepository.delete(id);
+    async deleteBoard(id: number, user: User): Promise<void> {
+        const result = await this.boardRepository.delete({id});
         console.log(result);
 
         if(result.affected === 0)
